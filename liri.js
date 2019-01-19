@@ -2,36 +2,161 @@
 //Bands in Town, Moment and DotEnv.
 var dotenv = require("dotenv").config();
 var keys = require("./keys");
-var spotify = require('node-spotify-api');
+var Spotify = require('node-spotify-api');
 var fs = require("fs");
 var moment = require("moment");
 var axios = require("axios");
 
 
 //access keys info from Spotify
-//var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 
 //Set user argument 2 to userCommand
 var userCommand = process.argv[2].toLowerCase();
-var userRequest = process.argv[3].toLowerCase();
-if(userCommand === "concert-this"){
-axios.get("https://rest.bandsintown.com/artists/" + userRequest + "/events?app_id=codingbootcamp").then(
-function(response){
+var userRequest = "";
+for (var i = 3; i < process.argv.length; i++) {
+    userRequest += " " + process.argv[i];
+};
+console.log(userRequest);
 
-//Create a default time for the bands in town API
-moment.defaultFormat = "DD.MM.YYYY";
-var concertDate = response.data[0].datetime;
-console.log("Name of Venue: " + response.data[0].venue.name);
-console.log("Venue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region );
-console.log("Date of the Event: " + moment(concertDate).format('MM/DD/YYYY') )
-});
+switch (userCommand) {
+    case "concert-this":
 
-} else if (userCommand === "spotify-this-song"){
+        axios.get("https://rest.bandsintown.com/artists/" + userRequest.trim + "/events?app_id=codingbootcamp").then(
+            function (response) {
+                console.log(response);
+                //Create a default time for the bands in town API
+                var concertDate = response.data[0].datetime;
+                console.log("Name of Venue: " + response.data[0].venue.name);
+                console.log("Venue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region);
+                console.log("Date of the Event: " + moment(concertDate).format('MM/DD/YYYY'))
+            });
 
-}else if (userCommand === "movie-this"){
 
-}else if (userCommand === "do-what-it-says"){
+        break;
+    case "spotify-this-song":
 
-}else{
-    console.log("Please type in one of the following: concert-this, spotify-this-song, movie-this, do-what-it-says")
-}
+        spotify.search({ type: 'track', query: userRequest.trim })
+            .then(function (response) {
+                //   var object = JSON.parse(response);
+                //   console.log(object);
+
+                console.log("Artist: " + response.tracks.items[0].artists[0].name);
+                console.log("Name of Song: " + response.tracks.items[0].name);
+                if (response.tracks.items[0].preview_url === null) {
+                    console.log("No song preview available, Full Song: " + response.tracks.items[0].artists[0].external_urls.spotify)
+                }
+                else {
+                    console.log("Song Preview:" + response.tracks.items[0].artists[0].preview_url)
+                }
+                console.log(response.tracks.items[0].artists[0].external_urls.spotify);
+                console.log(response.tracks.items[0].album.name);
+                console.log(response.tracks.items[0].preview_url)
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+
+        break;
+    case "movie-this":
+    axios.get("http://www.omdbapi.com/?t=" + userRequest + "&y=&plot=short&apikey=trilogy").then(
+        function (response) {
+            if(response.data.Response === "True"){
+
+            
+            console.log(response);
+             console.log("Title: " + response.data.Title);
+             console.log("Year Movie Came Out: " + response.data.Year);
+             console.log("IMDB Rating: " + response.data.imdbRating);
+             console.log("Rotton Tomatos Rating: " + response.data.Metascore);
+             console.log("Produced in: " + response.data.Country);
+             console.log("Languages: " + response.data.Language);
+             console.log("Plot: " + response.data.Plot);
+             console.log("Actors: " + response.data.Actors);
+
+         }
+        else{
+             axios.get("http://www.omdbapi.com/?t=Mr+Nobody&y=&plot=short&apikey=trilogy").then(
+                 function (response) {
+                    console.log("Title: " + response.data.Title);
+                    console.log("Year Movie Came Out: " + response.data.Year);
+                    console.log("IMDB Rating: " + response.data.imdbRating);
+                    console.log("Rotton Tomatos Rating: " + response.data.Metascore);
+                    console.log("Produced in: " + response.data.Country);
+                    console.log("Languages: " + response.data.Language);
+                    console.log("Plot: " + response.data.Plot);
+                    console.log("Actors: " + response.data.Actors);
+                 });
+         }
+         })
+         .catch(function (error) {
+            console.log(error);
+     
+          });
+       
+       
+        break;
+    case "do-what-it-says":
+        break;
+    default:
+        console.log("Please type in one of the following: concert-this, spotify-this-song, movie-this, do-what-it-says");
+
+};
+
+// //Concert-this function that runs bands in town"
+// function bandsintown(){
+//     axios.get("https://rest.bandsintown.com/artists/" + userRequest + "/events?app_id=codingbootcamp").then(
+//         function(response){
+
+//         //Create a default time for the bands in town API
+//         var concertDate = response.data[0].datetime;
+//         console.log("Name of Venue: " + response.data[0].venue.name);
+//         console.log("Venue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region );
+//         console.log("Date of the Event: " + moment(concertDate).format('MM/DD/YYYY') )
+//         });
+// }
+//   //Spotify functions
+// function spotify(){
+//     spotify.search({ type: 'track', query: 'All the Small Things' })
+//     .then(function(response) {
+//       //   var object = JSON.parse(response);
+//       //   console.log(object);
+//       console.log("Artist: " + response.tracks.items[0].artists[0].name);
+//       console.log("Name of Song: " + response.tracks.items[0].name);
+//       if(response.tracks.items[0].preview_url === null){
+//           console.log("No song preview available, Full Song: " + response.tracks.items[0].artists[0].external_urls.spotify)
+//       }
+//       else{
+//           console.log("Song Preview:" + response.tracks.items[0].artists[0].preview_url)
+//       }
+//       console.log(response.tracks.items[0].artists[0].external_urls.spotify);
+//       console.log(response.tracks.items[0].album.name);
+//       console.log(response.tracks.items[0].preview_url)
+//     })
+//     .catch(function(err) {
+//       console.log(err);
+//     });
+// };
+
+
+// if(userCommand === "concert-this"){
+// axios.get("https://rest.bandsintown.com/artists/" + userRequest + "/events?app_id=codingbootcamp").then(
+// function(response){
+
+// //Create a default time for the bands in town API
+// moment.defaultFormat = "DD.MM.YYYY";
+// var concertDate = response.data[0].datetime;
+// console.log("Name of Venue: " + response.data[0].venue.name);
+// console.log("Venue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region );
+// console.log("Date of the Event: " + moment(concertDate).format('MM/DD/YYYY') )
+// });
+
+// } else if (userCommand === "spotify-this-song"){
+
+// }else if (userCommand === "movie-this"){
+
+// }else if (userCommand === "do-what-it-says"){
+
+// }else{
+//     console.log("Please type in one of the following: concert-this, spotify-this-song, movie-this, do-what-it-says")
+// }
