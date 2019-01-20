@@ -13,7 +13,38 @@ var spotify = new Spotify(keys.spotify);
 
 //Set user argument 2 to userCommand
 var userCommand = process.argv[2].toLowerCase();
+<<<<<<< HEAD
 var userRequest = process.argv.slice(3).join(" ");
+=======
+var userRequest = process.argv[3].toLowerCase();
+
+switch (userCommand){
+    case "concert-this":
+        axios.get("https://rest.bandsintown.com/artists/" + userRequest + "/events?app_id=codingbootcamp").then(
+        function(response){
+        
+        //Create a default time for the bands in town API
+        var concertDate = response.data[0].datetime;
+        console.log("Name of Venue: " + response.data[0].venue.name);
+        console.log("Venue Location: " + response.data[0].venue.city + ", " + response.data[0].venue.region );
+        console.log("Date of the Event: " + moment(concertDate).format('MM/DD/YYYY') )
+        });
+        break;
+    case "spotify-this-song":
+        break;
+    case "movie-this":
+        break;
+    case "do-what-it-says":
+        break;
+    default:
+        console.log("Please type in one of the following: concert-this, spotify-this-song, movie-this, do-what-it-says");
+
+};
+
+if(userCommand === "concert-this"){
+axios.get("https://rest.bandsintown.com/artists/" + userRequest + "/events?app_id=codingbootcamp").then(
+function(response){
+>>>>>>> 3470095fa377aab90fdc04f0cfee5aa57b80f029
 
 
 console.log(userRequest);
