@@ -20,6 +20,7 @@ console.log(data);
 ```
 3. Finds movie information of for the user defined movie.   This functionality utilizes the NPM [Axios](https://www.npmjs.com/package/axios) package to run a GET call that returns information from [OMDB API](http://www.omdbapi.com/).  
   *The user types in `Movie-this` followed by the movie.
+  
 4. Runs command found in the Random.txt file.  This functionality utilizes the  fs.readFile function which will read the information found on the file and run one of the 3 functions above. 
 
 
