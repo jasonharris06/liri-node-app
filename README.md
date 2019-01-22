@@ -1,7 +1,9 @@
 # liri-node-app
-*** This app utilizes Node.JS to to run different commands based on user input
 
-*** The app completes the following commands:
+### This app utilizes Node.JS to to run different commands based on user input
+
+### The app completes the following commands:
+
 1. Finds next concert time, and venue, for the user defined musical artist.  This functionality utilizes the NPM [Axios](https://www.npmjs.com/package/axios) package to run a GET call that returns information from [Bands in Town](https://www.bandsintown.com/) 
  * The user types in `concert-this` followed by the artist. 
  
