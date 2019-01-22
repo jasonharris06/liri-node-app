@@ -24,6 +24,9 @@ console.log(data);
 
 4. Runs command found in the Random.txt file.  This functionality utilizes the  fs.readFile function which will read the information found on the file and run one of the 3 functions above. 
 
- 
+* Item 1
+* Item 2
+  * Item 2a
+  * Item 2b
  
  
