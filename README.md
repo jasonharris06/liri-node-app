@@ -1,4 +1,4 @@
-# liri-node-app
+# liri-Node-App
 
 ### This app utilizes Node.JS to to run different commands based on user input
 
