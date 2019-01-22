@@ -5,7 +5,6 @@
 ### The app completes the following commands:
 
 1. Finds next concert time, and venue, for the user defined musical artist.  This functionality utilizes the NPM [Axios](https://www.npmjs.com/package/axios) package to run a GET call that returns information from [Bands in Town](https://www.bandsintown.com/). 
-
   *The user types in `concert-this` followed by the artist. 
   
 2. Finds user defined song from sportify. **App user will need to provide their own Spotify Client-ID and Secret_ID**.  The information is pulled using the NPM [Node-spotify-api](https://www.npmjs.com/package/node-spotify-api) package.     
